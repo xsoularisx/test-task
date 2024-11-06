@@ -1,6 +1,8 @@
 import './App.css'
+import { useState } from 'react';
 import { Table } from 'antd'
 import { Button } from "antd";
+import { Modal } from "antd";
 
 const dataSource = [
   {
@@ -30,10 +32,15 @@ const columns = [
 
 function App() {
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const showModal = () => { setIsModalVisible(true); };
+  const hideModal = () => { setIsModalVisible(false); };
+
   return (
     <>
-      <Button type="default" className='button'>Добавить</Button>
+      <Button type="default" className='button' onClick={showModal}>Добавить</Button>
       <Table dataSource={dataSource} columns={columns} />
+      <Modal title="Добавить запись" open={isModalVisible} onOk={hideModal} onCancel={hideModal}></Modal>
     </>
   )
 }
