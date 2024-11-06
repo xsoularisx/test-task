@@ -1,6 +1,6 @@
 import './App.css'
 import { useState } from 'react';
-import { Input, Button, Modal, Form, Table } from 'antd'
+import { Input, Button, Modal, Form, Table, Popconfirm } from 'antd'
 
 interface DataRecord {
   key: string;
@@ -21,6 +21,11 @@ function App() {
       name: 'Смирнов Серей Сергеевич',
       age: 42,
     },
+    {
+      key: '3',
+      name: 'Петрова Анна Александровна',
+      age: 53,
+    },
 
   ];
 
@@ -29,21 +34,28 @@ function App() {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      width: '50%',
       sorter: (a: { name: string; }, b: { name: any; }) => a.name.localeCompare(b.name),
     },
     {
       title: 'Age',
       dataIndex: 'age',
       key: 'age',
+      width: '25%',
       sorter: (a: { age: number; }, b: { age: number; }) => a.age - b.age,
     },
     {
       title: 'Actions',
       key: 'actions',
+      width: '25%',
       render: (_: string, record: DataRecord) => (
         <>
-          <Button onClick={() => openModal(record)} type="default">edit</Button>
-          <Button onClick={() => deleteRecord(record.key)} type="default">delete</Button>
+          <Button className='button__action' onClick={() => openModal(record)} type="default">edit</Button>
+          <Popconfirm
+            title="Are you sure you want to delete this record?"
+            onConfirm={() => deleteRecord(record.key)}>
+            <Button className='button__action' type="default">delete</Button>
+          </Popconfirm>
         </>
       ),
     },
@@ -93,14 +105,20 @@ function App() {
 
   return (
     <>
-      <Button type="default" onClick={() => openModal(null)}>Add</Button>
-      <Table dataSource={data} columns={columns} />
+      <Button
+        className='button__main'
+        type="default" onClick={() => openModal(null)}>Add new record</Button>
+      <Table
+        dataSource={data}
+        columns={columns} />
       <Modal
         title="Add record"
         open={isModalVisible}
         onOk={handleData}
         onCancel={closeModal}>
-        <Form form={form} layout="vertical">
+        <Form
+          form={form}
+          layout="vertical">
           <Form.Item
             name="name"
             label="Full name"
