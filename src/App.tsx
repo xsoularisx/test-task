@@ -1,6 +1,7 @@
 import './App.css';
 import { useState } from 'react';
 import { Input, Button, Modal, Form, Table, Popconfirm } from 'antd';
+import { ColumnsType } from 'antd/es/table';
 
 interface DataRecord {
   key: string;
@@ -17,8 +18,8 @@ function App() {
     },
     {
       key: '2',
-      name: 'Смирнов Серей Сергеевич',
-      age: 42,
+      name: 'Смирнов Сергей Сергеевич',
+      age: 17,
     },
     {
       key: '3',
@@ -27,7 +28,7 @@ function App() {
     },
   ];
 
-  const columns = [
+  const columns: ColumnsType<DataRecord> = [
     {
       title: 'Name',
       dataIndex: 'name',
@@ -42,6 +43,16 @@ function App() {
       key: 'age',
       width: '25%',
       sorter: (a: { age: number }, b: { age: number }) => a.age - b.age,
+      filters: [
+        { text: 'up to 18', value: 'upto18' },
+        { text: '18 and older', value: '18andolder' },
+      ],
+      onFilter: (value, record: { age: number }) => {
+        if (value === 'upto18') {
+          return record.age < 18;
+        }
+        return record.age >= 18;
+      },
     },
     {
       title: 'Actions',
