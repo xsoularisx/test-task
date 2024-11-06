@@ -1,5 +1,6 @@
-import { Table } from 'antd'
 import './App.css'
+import { Table } from 'antd'
+import { Button } from "antd";
 
 const dataSource = [
   {
@@ -31,6 +32,7 @@ function App() {
 
   return (
     <>
+      <Button type="default" className='button'>Добавить</Button>
       <Table dataSource={dataSource} columns={columns} />
     </>
   )
